@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All rooms</title>
+</head>
+<body>
+{% if not rooms %}
+    <h2>No available rooms</h2>
+{% endif %}
+<div>
+    <ol>
+        {% for room in rooms %}
+            <lu>
+                <a href=""></a>{{ room.name }} -> capacity: {{ room.capacity }}<br>
+            Availability: yes/no <br>
+            Projector availability: {{ room.projector }} <br>
+                <a href="{% url 'edit_room' room.id %}">edit room</a>
+                <a href="{% url 'delete_room' room.id %}">delete room</a>
+                <a href="">reserve room</a>
+                <br>
+            </lu><br>
+        {% endfor %}
+    </ol>
+</div>
+</body>
+</html>

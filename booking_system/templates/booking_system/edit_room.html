@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit room</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    Room name:
+    <input type="text" name="name" value="{{ room.name }}"><br>
+    Room capacity:
+    <input type="text" name="capacity" value="{{ room.capacity }}"><br>
+    Projector availability:
+    <input type="checkbox" name="projector">Available
+    <br>
+    <input type="submit" value="Modify room">
+</form>
+</body>
+</html>
