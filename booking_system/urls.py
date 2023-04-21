@@ -9,4 +9,5 @@ urlpatterns = [
     re_path(r'^room/modify/(?P<room_id>\d+)/$', system_views.EditRoom.as_view(), name='edit_room'),
     re_path(r'^room/reserve/(?P<room_id>\d+)/$', system_views.ReserveRoom.as_view(), name='room_reservation'),
     re_path(r'^room/info/(?P<room_id>\d+)/$', system_views.InfoRoom.as_view(), name='room_info'),
+    path('search/', system_views.SearchRoom.as_view(), name='search_room'),
 ]

@@ -13,7 +13,7 @@
     Room name:
     <input type="text" name="name" value="{{ room.name }}"><br>
     Room capacity:
-    <input type="text" name="capacity" value="{{ room.capacity }}"><br>
+    <input type="number" name="capacity" value="{{ room.capacity }}"><br>
     Projector availability:
     <input type="checkbox" name="projector" {% if room.projector %} checked {% endif %}>Available
     <br>

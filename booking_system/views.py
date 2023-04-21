@@ -17,7 +17,7 @@ class NewRoom(View):
 
     def post(self, request):
         name = request.POST.get('name')
-        capacity = request.POST.get('capacity')
+        capacity = int(request.POST.get('capacity'))
         projector = request.POST.get('projector') == 'on'
 
         if not name:
@@ -26,12 +26,8 @@ class NewRoom(View):
         if Room.objects.filter(name=name):
             return HttpResponse('The room already exists. Try different name')
 
-        try:
-            capacity = int(capacity)
-        except ValueError:
-            return HttpResponse('Capacity must be an integer greater than 0')
         if capacity <= 0:
-            return HttpResponse('Capacity must be an integer greater than 0')
+            return HttpResponse('Capacity must be greater than 0')
 
         Room.objects.create(name=name, capacity=capacity, projector=projector)
         return redirect('main_page')
@@ -60,7 +56,7 @@ class EditRoom(View):
     def post(self, request, room_id):
         my_room = Room.objects.get(pk=int(room_id))
         name = request.POST.get('name')
-        capacity = request.POST.get('capacity')
+        capacity = int(request.POST.get('capacity'))
         projector = request.POST.get('projector') == 'on'
 
         if not name:
@@ -70,12 +66,8 @@ class EditRoom(View):
             if Room.objects.filter(name=name):
                 return HttpResponse('The room already exists. Try different name')
 
-        try:
-            capacity = int(capacity)
-        except ValueError:
-            return HttpResponse('Capacity must be an integer greater than 0')
         if capacity <= 0:
-            return HttpResponse('Capacity must be an integer greater than 0')
+            return HttpResponse('Capacity must be greater than 0')
 
         my_room.name = name
         my_room.capacity = capacity
@@ -113,3 +105,25 @@ class InfoRoom(View):
         return render(request, 'booking_system/room_info.html', {'room': my_room,
                                                                  'reservations': my_room.roomreservation_set.filter(
                                                                      room_id=room_id).order_by('-date')})
+
+
+class SearchRoom(View):
+    def get(self, request):
+        name = request.GET.get('name')
+        capacity = request.GET.get('capacity')
+        capacity = int(capacity) if capacity else 0
+        projector = request.GET.get('projector') == 'on'
+
+        rooms = Room.objects.all()
+        rooms = rooms.filter(projector=projector)
+        if capacity:
+            rooms = rooms.filter(capacity__gt=capacity)
+        if name:
+            rooms = rooms.filter(name__contains=name)
+
+        for room in rooms:
+            reservation_dates = [reservation.date for reservation in room.roomreservation_set.all()]
+            room.reserved = date.today() in reservation_dates
+
+        return render(request, 'booking_system/all_rooms.html', {'rooms': rooms,
+                                                                 'date': date.today()})
