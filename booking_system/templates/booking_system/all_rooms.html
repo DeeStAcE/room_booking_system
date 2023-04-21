@@ -10,17 +10,26 @@
 <body>
 {% if not rooms %}
     <h2>No available rooms</h2>
+    <a href="{% url 'new_room' %}">add room</a>
 {% endif %}
 <div>
     <ol>
         {% for room in rooms %}
             <lu>
                 <a href=""></a>{{ room.name }} -> capacity: {{ room.capacity }}<br>
-            Availability: yes/no <br>
-            Projector availability: {{ room.projector }} <br>
+                Availability: yes/no <br>
+                Projector availability: {{ room.projector }} <br>
+                {% if room.reserved %}
+                    Unavailable for today
+                {% else %}
+                    Available for today
+                {% endif %}
+                <br>
                 <a href="{% url 'edit_room' room.id %}">edit room</a>
                 <a href="{% url 'delete_room' room.id %}">delete room</a>
-                <a href="">reserve room</a>
+                <a href="{% url 'room_reservation' room.id %}">reserve room</a>
+                <br>
+                <a href="{% url 'room_info' room.id %}">show more info</a>
                 <br>
             </lu><br>
         {% endfor %}

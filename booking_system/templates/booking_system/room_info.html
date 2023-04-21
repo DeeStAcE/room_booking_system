@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Room {{ room.name }}</title>
+</head>
+<body>
+The room "{{ room.name }}" has capacity of {{ room.capacity }} and
+{% if room.projector %}
+    has
+{% else %}
+    has no
+{% endif %}
+projector.
+<br>
+<div>
+    Actual reservations: <br>
+    <ol>
+        {% for reservation in reservations %}
+            <li>{{ reservation.date }}: {{ reservation.comment }}</li>
+        {% endfor %}
+    </ol>
+</div>
+<div>
+    <a href="{% url 'edit_room' room.id %}">edit room</a>
+    <a href="{% url 'delete_room' room.id %}">delete room</a>
+    <a href="{% url 'room_reservation' room.id %}">reserve room</a>
+    <br>
+    <a href="{% url 'all_rooms' %}">show all rooms</a>
+</div>
+</body>
+</html>
