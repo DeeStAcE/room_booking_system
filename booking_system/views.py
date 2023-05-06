@@ -115,7 +115,8 @@ class SearchRoom(View):
         projector = request.GET.get('projector') == 'on'
 
         rooms = Room.objects.all()
-        rooms = rooms.filter(projector=projector)
+        if projector:
+            rooms = rooms.filter(projector=projector)
         if capacity:
             rooms = rooms.filter(capacity__gt=capacity)
         if name:
